@@ -1,0 +1,2 @@
+argparse>=1.1
+-e git://github.com/bpeebles/devrandom.git#egg=devrandom>=0.1.1

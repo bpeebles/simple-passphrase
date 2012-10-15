@@ -1,0 +1,101 @@
+#!/usr/bin/env python
+
+"""Very simple program to generate Diceware_ style passphrases.
+
+This attempts to use my ``devrandom`` module_, then tries to
+``random.SystemRandom``, and then falls back to ``random`` if no other source
+is there. A warning is issued in the latter two cases.
+
+The Diceware_ site suggest using a physical, dice-based generation method.
+Since I know I'll never keep my passphrases *that* secure, I figure I might as
+well make creation of the phrases as easy as possible so I'd actually use
+something like it.
+
+Help message::
+
+    usage: diceware [-h] [-m MINIMUM] [-n NUMBER] [-s SEP] [-f PATH] [-v]
+
+    Generate dicewords passphrases
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    -m MINIMUM, --minimum MINIMUM
+                            Minimum number of total characters in passphrase.
+    -n NUMBER, --number NUMBER
+                            Number of words in dicewords passphrase.
+    -s SEP, --seperator SEP
+                            Seperation characters between dice words.
+    -f PATH, --file PATH  Location of dicewords file, in 'NNNNNN word' format.
+    -v, --verbose
+
+.. _module https://github.com/bpeebles/devrandom
+.. _Diceware http://world.std.com/~reinhold/diceware.html
+"""
+
+import argparse
+import sys
+
+import simple_passphrase
+
+try:
+    import devrandom as rand
+    _throw_away = rand.randint(0, 1)
+    PSEUDEO_WARNING = ''
+except (NameError, ImportError, NotImplementedError):
+    import random
+    try:
+        rand = random.SystemRandom()
+        _throw_away = rand.randint(0, 1)
+        PSEUDEO_WARNING = 'Warning: using less secure non-blocking random source.'
+    except NotImplementedError:
+        rand = random
+        PSEUDEO_WARNING = 'Warning: usingless secure PRNG source.'
+
+def load_dicewords(path=None, stream=None):
+    lines = []
+    if path:
+        stream = open(path, 'r')
+    for line in stream:
+        lines.append(line[line.find(' '):].strip())
+    return lines
+
+if __name__ == "__main__":
+    if PSEUDEO_WARNING:
+        sys.stderr.write("%s\n\n" % (PSEUDEO_WARNING,))
+    parser = argparse.ArgumentParser(description='Generate dicewords passphrases')
+    parser.add_argument('-m', '--minimum', dest='minimum', action='store',
+            help="Minimum number of total characters in passphrase.",
+            default=14, type=int)
+    parser.add_argument('-n', '--number', dest='number', action='store',
+            help="Number of words in dicewords passphrase.",
+            default=5, type=int)
+    parser.add_argument('-s', '--seperator', dest="sep", action='store',
+            help="Seperation characters between dice words.",
+            default=' ')
+    parser.add_argument('-f', '--file', dest='path', action='store',
+            help="Location of dicewords file, in 'NNNNNN word' format. Defaults to package provided list.",
+            default='')
+    parser.add_argument('-v', '--verbose', dest='verbosity', action='store_true',
+            default=False)
+    args = parser.parse_args()
+
+    from pkg_resources import resource_stream
+    f = None
+    path = None
+    try:
+        f = resource_stream('simple_passphrase', 'words/dicewords.txt')
+    except (IOError, ImportError):
+        if args.path:
+            path = args.path
+        else:
+            path ='./dicewords.txt'
+    dicewords = load_dicewords(path=path, stream=f)
+    passphrase, tries = simple_passphrase.generate_passphrase(
+                dicewords, args.number, args.minimum, sep=args.sep,
+                rand=rand)
+    if args.verbosity:
+        print "Rounds: %d" % (tries,)
+    if not passphrase:
+        print "Failed to generate passphrase"
+    else:
+        print passphrase
