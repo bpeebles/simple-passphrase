@@ -9,16 +9,18 @@ Install
 Using ``pip`` should work. Ideally::
 
     $ pip install -e git+git://github.com/bpeebles/devrandom.git#egg=devrandom
-    $ pip install -e git+git://github.com/bpeebles/simple_passphrase#egg=simple_passphrase
+    $ pip install -e git+git://github.com/bpeebles/simple-passphrase#egg=simple_passphrase
 
 inside of a virtualenv or some such.
 
 Simple Diceware
 ***************
 
-Included is a ``diceware`` script to generate Diceware_ style passphrases.
+Included is a ``diceware`` script to generate `Diceware
+<http://world.std.com/~reinhold/diceware.html>`_ style passphrases.
 
-This attempts to use my ``devrandom`` module_, then tries to
+This attempts to use my ``devrandom`` `module
+<https://github.com/bpeebles/devrandom>`_, then tries to
 ``random.SystemRandom``, and then falls back to ``random`` if no other source
 is there. A warning is issued in the latter two cases.
 
