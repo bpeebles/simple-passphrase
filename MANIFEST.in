@@ -1,2 +1,2 @@
 include bin/*
-include passphrase/words/*.txt
+include simple_passphrase/words/*.txt
