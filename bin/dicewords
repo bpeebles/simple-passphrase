@@ -23,8 +23,9 @@ Help message::
                             Minimum number of total characters in passphrase.
     -n NUMBER, --number NUMBER
                             Number of words in dicewords passphrase.
-    -s SEP, --seperator SEP
-                            Seperation characters between dice words.
+    -s SEP, --seperators SEP
+                            Characters to randomly choice from to put between dice
+                            words.
     -f PATH, --file PATH  Location of dicewords file, in 'NNNNNN word' format.
     -v, --verbose
 
@@ -69,8 +70,8 @@ if __name__ == "__main__":
     parser.add_argument('-n', '--number', dest='number', action='store',
             help="Number of words in dicewords passphrase.",
             default=5, type=int)
-    parser.add_argument('-s', '--seperator', dest="sep", action='store',
-            help="Seperation characters between dice words.",
+    parser.add_argument('-s', '--seperators', dest="sep", action='store',
+            help="Characters to randomly choice from to put between dice words.",
             default=' ')
     parser.add_argument('-f', '--file', dest='path', action='store',
             help="Location of dicewords file, in 'NNNNNN word' format. Defaults to package provided list.",

@@ -41,11 +41,20 @@ Help message::
                             Minimum number of total characters in passphrase.
     -n NUMBER, --number NUMBER
                             Number of words in dicewords passphrase.
-    -s SEP, --seperator SEP
-                            Seperation characters between dice words.
+    -s SEP, --seperators SEP
+                            Characters to randomly choice from to put between dice
+                            words.
     -f PATH, --file PATH  Location of dicewords file, in 'NNNNNN word' format.
                             Defaults to package provided list.
     -v, --verbose
+
+Example
+*******
+
+::
+
+    $ dicewords -n 5 -s '. !-'
+    pine-musty-amber!sweep-p
 
 
 .. _module https://github.com/bpeebles/devrandom
