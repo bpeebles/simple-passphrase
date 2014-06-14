@@ -1,14 +1,16 @@
 import random
 
 def generate_passphrase(phrases, number, minimum, sep, max_tries=10, rand=random):
-    """Return a string whose len(s) > ``minimum`` with number ``random`` phrases joined by ``sep``
+    """Return a string whose len(s) > ``minimum`` with number ``random``
+    phrases joined by random characters from ``sep``
 
-    rand -- should provide a name space similar to ``random``, at least ``randint``
+    rand -- should provide an interface similar to ``random``, at least
+            ``randint`` and ``choice``
     max_tries -- the maximum iterations to try if minimum isn't met
 
     Raises ValueError if it fails at doing so.
-    """
 
+    """
     passphrase = ''
     tries = 0
     while tries < max_tries and len(passphrase) < minimum:
@@ -19,5 +21,5 @@ def generate_passphrase(phrases, number, minimum, sep, max_tries=10, rand=random
         passphrase = sep.join(words)
         tries += 1
     if tries >= max_tries:
-            passphrase = ''
+        passphrase = ''
     return passphrase, tries

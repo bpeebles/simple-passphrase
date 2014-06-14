@@ -6,10 +6,10 @@ Very simple package to generate passphrases.
 Install
 *******
 
-Using ``pip`` should work. Ideally::
+Using ``pip`` should work. Something like::
 
-    $ pip install -e git+git://github.com/bpeebles/devrandom.git#egg=devrandom
-    $ pip install -e git+git://github.com/bpeebles/simple-passphrase#egg=simple_passphrase
+    $ pip install git+git://github.com/bpeebles/devrandom.git#egg=devrandom
+    $ pip install git+git://github.com/bpeebles/simple-passphrase#egg=simple_passphrase
 
 inside of a virtualenv or some such.
 
